@@ -1,0 +1,16 @@
+version: '3.6'
+
+services:
+  mysql:
+    image: mariadb:${MARIADB_VERSION:-latest}
+    container_name: limble_mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - 33006:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD:-password}
+      - MYSQL_USER=${DATABASE_USER:-root}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD:-password}
+      - MYSQL_DATABASE=${COMPOSE_PROJECT_NAME:-wordpress}
+    restart: always
