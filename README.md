@@ -22,7 +22,11 @@ I'm going to start with a basic docker setup of wordpress locally. I'll use dock
 
 I'll use terraform to setup the AWS infrastructure. I'll start with a basic VPC, public and private subnets, and a bastion host. I'll use the AWS reference architecture as a guide.
 
-All secrets will be stored in a secrets.tfvars file, which will be gitignored.
+A basic terraform setup will be used, with a `main.tf` file for the main configuration, and a `variables.tf` file for the variables.
+
+All inputs will be stored in a `main.auto.tfvars` file, which will be gitignored. See the `main.auto.tfvars.example` file for an example.
+
+> Pre-requisites: create a ssh key pair using `ssh-keygen -f bastion.key`
 
 - Create a VPC
 - Create a public subnet
