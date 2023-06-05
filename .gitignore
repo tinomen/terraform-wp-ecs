@@ -2,4 +2,8 @@ mysql/*
 wordpress/*
 
 .terraform
+*.tfstate*
+*.auto.tfvars
+*.lock.hcl
+
 *.key*
