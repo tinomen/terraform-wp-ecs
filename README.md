@@ -7,6 +7,7 @@ Some references for setting up wordpress in AWS, and best practices.
 - [AWS reference architecture](https://aws.amazon.com/quickstart/architecture/wordpress/)
 - [AWS Wordpress best practices](https://aws.amazon.com/blogs/architecture/wordpress-best-practices-on-aws/)
 - [AWS reference achitecture - github](https://github.com/aws-samples/aws-refarch-wordpress)
+- [Running WordPress on ECS/Fargate/EFS](https://aws.amazon.com/blogs/containers/running-wordpress-amazon-ecs-fargate-ecs/) A cloudformation example.
 
 ## Phases
 
@@ -37,7 +38,7 @@ All inputs will be stored in a `main.auto.tfvars` file, which will be gitignored
 
 ### Phase 3: Setup ECS
 
-- Create EFS volume
+- Create EFS volume (single for entire wordpress dir)
 - Create ECS cluster (fargate)
 - Create ECS task definition
 - Create ECS service
