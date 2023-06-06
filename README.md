@@ -11,7 +11,7 @@ Some references for setting up wordpress in AWS, and best practices.
 
 ## Phases
 
-### Phase 1: Basic
+### Phase 1: Basic ✅
 
 I'm going to start with a basic docker setup of wordpress locally. I'll use docker-compose to setup the wordpress and miria containers. Using the official wordpress and miria images from docker hub to start.
 
@@ -20,7 +20,7 @@ I'm going to start with a basic docker setup of wordpress locally. I'll use dock
   - should learn what wordpress volumes are needed to be 'shared' between containers
   - setting up volume for entire wp dir is easiest for now
 
-### Phase 2: terraform AWS
+### Phase 2: terraform AWS ✅
 
 I'll use terraform to setup the AWS infrastructure. I'll start with a basic VPC, public and private subnets, and a bastion host. I'll use the AWS reference architecture as a guide.
 
@@ -37,7 +37,7 @@ All inputs will be stored in a `main.auto.tfvars` file, which will be gitignored
 - Create RDS MiriaDB instance
   - allow ssh forwarding to connect to RDS
 
-### Phase 3: Setup ECS
+### Phase 3: Setup ECS ✅
 
 - Create EFS volume (single for entire wordpress dir)
   - choosing bitnami image for wordpress because it uses seperate /bitnami
@@ -47,11 +47,13 @@ All inputs will be stored in a `main.auto.tfvars` file, which will be gitignored
 - Create ECS service
 - Create ALB
   - just http for now
-- Create Route53 record (bonus)
+- Create memchased cluster
 
 ### Phase 4: Setup performance services
 
-- Create cache
+- Create Route53 record (bonus)
+- Setup caching manually via UI
+  - there is a permission issue on the W3-cache plugin
 - Create CDN
 - Tweak EFS settings for cost/performance
 - Tweak ECS settings for cost/performance
