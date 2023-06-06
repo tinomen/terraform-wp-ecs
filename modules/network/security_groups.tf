@@ -153,3 +153,31 @@ resource "aws_security_group_rule" "ecs_service_egress" {
 #   source_security_group_id = aws_security_group.efs_service.id
 #   security_group_id        = aws_security_group.ecs_service.id
 # }
+
+resource "aws_security_group" "memcached" {
+  name        = "${var.environment}-memcached"
+  description = "memcached"
+  vpc_id      = aws_vpc.main.id
+  tags = {
+    Name = "${var.environment}-memcached-sg"
+    Environment = var.environment
+  }
+}
+resource "aws_security_group_rule" "memcached_ingress" {
+  type                     = "ingress"
+  description              = "memcached"
+  protocol                 = "tcp"
+  from_port                = 11211
+  to_port                  = 11211
+  cidr_blocks              = [aws_vpc.main.cidr_block]
+  security_group_id        = aws_security_group.memcached.id
+}
+resource "aws_security_group_rule" "memcached_egress" {
+  type                     = "egress"
+  description              = "memcached"
+  protocol                 = "-1"
+  from_port                = 0
+  to_port                  = 0
+  cidr_blocks              = ["0.0.0.0/0"]
+  security_group_id        = aws_security_group.memcached.id
+}
