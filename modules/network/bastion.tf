@@ -11,7 +11,7 @@ resource "aws_instance" "admin_bastion" {
   monitoring                  = false
   
   key_name               = aws_key_pair.bastion.key_name
-  subnet_id              = aws_subnet.public[0].id
+  subnet_id              = aws_subnet.public[1].id
   vpc_security_group_ids = [aws_security_group.admin_bastion_ssh.id, data.aws_security_group.default.id]
   
   tags = {

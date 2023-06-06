@@ -3,6 +3,30 @@ data "aws_region" "current" {}
 resource "aws_ecs_cluster" "wordpress" {
   name = "${var.environment}-wordpress-cluster"
 }
+
+resource "aws_ecs_service" "wordpress" {
+  name             = "${var.environment}-wordpress-ecs-service"
+  cluster          = aws_ecs_cluster.wordpress.arn
+  task_definition   = aws_ecs_task_definition.wp.arn
+  desired_count    = 2
+  launch_type      = "FARGATE"
+  platform_version = "1.4.0"
+  propagate_tags   = "SERVICE"
+  network_configuration {
+    subnets          = var.ecs_subnet_ids
+    security_groups  = var.ecs_security_group_ids
+    assign_public_ip = true
+  }
+  load_balancer {
+    target_group_arn = var.http_target_group_arn
+    container_name   = "${var.environment}-wordpress"
+    container_port   = "8080"
+  }
+  tags               = {
+    Name = "${var.environment}-wordpress-ecs-service"
+  }
+}
+
 resource "aws_ecs_task_definition" "wp" {
   family                   = "${var.environment}-wordpress"
   network_mode             = "awsvpc"
@@ -33,7 +57,7 @@ resource "aws_ecs_task_definition" "wp" {
       "options": { 
         "awslogs-group" : "${var.cloudwatch_log_name}",
         "awslogs-region": "${data.aws_region.current.name}",
-        "awslogs-stream-prefix": "wordpress"
+        "awslogs-stream-prefix": "ecs"
       }
     }, 
     "environment": [
@@ -47,7 +71,7 @@ resource "aws_ecs_task_definition" "wp" {
       },
       {   
         "name": "WORDPRESS_DATABASE_USER",
-        "value": "${var.db_username}}"
+        "value": "${var.db_username}"
       },
       {   
         "name": "WORDPRESS_DATABASE_PASSWORD",
@@ -86,25 +110,5 @@ resource "aws_ecs_task_definition" "wp" {
         iam = "DISABLED"
       }
     }
-  }
-}
-
-resource "aws_ecs_service" "wordpress" {
-  name             = "${var.environment}-wordpress-ecs-service"
-  cluster          = aws_ecs_cluster.wordpress.arn
-  task_definition   = aws_ecs_task_definition.wp.arn
-  desired_count    = 2
-  launch_type      = "FARGATE"
-  platform_version = "1.4.0"
-  propagate_tags   = "SERVICE"
-  network_configuration {
-    subnets          = var.ecs_subnet_ids
-    security_groups  = var.ecs_security_group_ids
-    assign_public_ip = false
-  }
-  load_balancer {
-    target_group_arn = var.http_target_group_arn
-    container_name   = "${var.environment}-wordpress"
-    container_port   = "8080"
   }
 }

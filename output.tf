@@ -16,17 +16,17 @@ output "bastion_ip" {
 output "bastion_dns" {
   value = module.network.bastion_host_dns
 }
-output "rds_hostname" {
+output "db_hostname" {
   description = "RDS instance hostname"
-  value       = module.db.rds_hostname
+  value       = module.db.db_hostname
 }
 
-output "rds_port" {
+output "db_port" {
   description = "RDS instance port"
   value       = module.db.rds_port
 }
 
-output "rds_username" {
+output "db_username" {
   description = "RDS instance root username"
   value       = module.db.rds_username
 }

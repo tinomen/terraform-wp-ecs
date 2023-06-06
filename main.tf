@@ -33,7 +33,7 @@ module "ecs" {
     ecs_security_group_ids  = [module.network.ecs_security_group_id]
     efs_file_system_id       = module.network.efs_file_system_id
     efs_access_point_id     = module.network.efs_access_point_id
-    db_url                  = module.db.db_url
+    db_url                  = module.db.db_hostname
     db_username             = module.db.rds_username
     db_password             = module.db.rds_password
     http_target_group_arn   = module.network.http_target_group_arn

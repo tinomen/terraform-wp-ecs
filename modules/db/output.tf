@@ -1,4 +1,4 @@
-output "rds_hostname" {
+output "db_hostname" {
   description = "RDS instance hostname"
   value       = aws_db_instance.default.address
 }
