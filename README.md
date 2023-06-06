@@ -18,6 +18,7 @@ I'm going to start with a basic docker setup of wordpress locally. I'll use dock
 - miriadb
 - wordpress
   - should learn what wordpress volumes are needed to be 'shared' between containers
+  - setting up volume for entire wp dir is easiest for now
 
 ### Phase 2: terraform AWS
 
@@ -39,10 +40,13 @@ All inputs will be stored in a `main.auto.tfvars` file, which will be gitignored
 ### Phase 3: Setup ECS
 
 - Create EFS volume (single for entire wordpress dir)
+  - choosing bitnami image for wordpress because it uses seperate /bitnami
+    folder allowing for a single volume mount to be used
 - Create ECS cluster (fargate)
 - Create ECS task definition
 - Create ECS service
 - Create ALB
+  - just http for now
 - Create Route53 record (bonus)
 
 ### Phase 4: Setup performance services
