@@ -5,5 +5,5 @@ wordpress/*
 *.tfstate*
 *.auto.tfvars
 *.lock.hcl
-
+tfplan
 *.key*
