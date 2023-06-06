@@ -40,3 +40,6 @@ output "cloudwatch_log_name" {
 output "ecs_task_execution_role_arn" {
   value = aws_iam_role.ecs_task_role.arn
 }
+output "memcached_host" {
+  value = aws_elasticache_cluster.mem.configuration_endpoint
+}
