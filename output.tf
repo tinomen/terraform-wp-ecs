@@ -30,3 +30,7 @@ output "rds_username" {
   description = "RDS instance root username"
   value       = module.db.rds_username
 }
+output "load_balancer_ip" {
+  description = "Load balancer IP"
+  value       = module.network.load_balancer_ip
+}
