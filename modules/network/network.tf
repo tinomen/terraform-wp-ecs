@@ -1,6 +1,3 @@
-data "aws_availability_zones" "available" {
-}
-
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
   enable_dns_support = true
@@ -10,6 +7,16 @@ resource "aws_vpc" "main" {
     Name = "${var.environment}-vpc"
     Environment = var.environment
   }
+}
+
+resource "aws_cloudwatch_log_group" "wordpress" {
+  name              = "/wordpress/${var.environment}"
+  retention_in_days = 7
+  kms_key_id        = aws_kms_key.wordpress.arn
+}
+resource "aws_cloudwatch_log_stream" "wordpress" {
+  name           = "/wordpress/${var.environment}"
+  log_group_name = aws_cloudwatch_log_group.wordpress.name
 }
 
 ##########
@@ -55,7 +62,7 @@ resource "aws_eip" "nat_eip" {
     Environment = "${var.environment}"
   }
 }
-# NAT gateway for each private subnet
+# NAT gateway for each public subnet
 resource "aws_nat_gateway" "nat" {
   count         = var.az_count
   subnet_id     = element(aws_subnet.public.*.id, count.index)
