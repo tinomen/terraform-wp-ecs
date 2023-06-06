@@ -1,11 +1,11 @@
 resource "aws_db_subnet_group" "default" {
-  name       = "wordpress-db-subnet-group"
+  name       = "${var.environment}-wordpress-db-subnet-group"
   description = "RDS default subnet group"
   subnet_ids = var.subnets
 }
 
 resource "aws_db_parameter_group" "default" {
-  name        = "mariadb-params"
+  name        = "${var.environment}-mariadb-params"
   family      = "mariadb10.6"
   description = "MariaDB parameter group"
 
@@ -15,25 +15,8 @@ resource "aws_db_parameter_group" "default" {
   }
 }
 
-resource "aws_security_group" "this" {
-  name        = "wordpress-db-security-group"  
-  vpc_id      = var.vpc_id
-  description = "Control traffic to/from RDS"
-  egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 resource "aws_db_instance" "default" {
+  identifier           = "${var.environment}-wordpress-db"  
 # Allocating the storage for database instance.
   allocated_storage    = 20
 # Declaring the database engine and engine_version
@@ -50,7 +33,7 @@ resource "aws_db_instance" "default" {
   db_subnet_group_name = aws_db_subnet_group.default.name
   parameter_group_name = aws_db_parameter_group.default.name
 
-  vpc_security_group_ids = [aws_security_group.this.id]
+  vpc_security_group_ids = var.security_groups
   
   # for testing purposes
   publicly_accessible   = true
